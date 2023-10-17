@@ -1,0 +1,20 @@
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBootProjectJpaApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ac = SpringApplication.run(SpringBootProjectJpaApplication.class, args);
+		
+		
+//		InsertDemo insertionTest = ac.getBean("insertion", InsertDemo.class);
+		
+//		UpdateDemo updateDemo = ac.getBean("updation", UpdateDemo.class);
+		
+	}
+
+}

@@ -1,0 +1,6 @@
+package com.example.demo;
+
+public class Snippet {
+	Incorrect parameter count in the call to native function 'datediff'
+}
+

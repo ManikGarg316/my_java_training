@@ -1,0 +1,28 @@
+package com.example.demo;
+
+import java.util.Scanner;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBootProject1Application {
+
+	public static void main(String[] args) {
+		ApplicationContext ac = SpringApplication.run(SpringBootProject1Application.class, args);
+		MyMessage mm = ac.getBean("ob1", MyMessage.class);
+		mm.welcome();
+		Scanner ob = new Scanner(System.in);
+		System.out.println("Enter two numbers:");
+		int a = ob.nextInt();
+		int b = ob.nextInt();
+		System.out.println("The sum of the two numbers is: "+mm.sum(a, b));
+		ob.close();
+		
+		Employee em = ac.getBean("emp", Employee.class);
+		em.input();
+		em.display();
+	}
+
+}

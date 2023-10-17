@@ -1,0 +1,28 @@
+package com.example.demo;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
+
+public class Calculator implements CommandLineRunner, Ordered{
+	
+	public int square(int a) {
+		return a*a;
+	}
+	
+	public int mult(int a, int b) {
+		return a*b;
+	}
+	
+	@Override
+	public int getOrder() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
