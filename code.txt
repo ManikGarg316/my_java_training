@@ -1,0 +1,211 @@
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<limits.h>
+struct Employee{
+    int Employee_ID;
+    char* First_Name;
+    char* Last_Name;
+    int Salary;
+    char* Joining_Date;
+};
+
+int findEmployee(struct Employee *Employees, int len, int emp_id){
+    int i=0;
+    for(i=0;i<len;i++){
+        if(Employees[i].Employee_ID == emp_id){
+            return i;
+        }
+    }
+    return len;
+}
+
+int addEmployee(struct Employee* Employees, int emp_id, char* firstName, char* secondName, int salary, char* date, int len){
+    printf("Add employee\n");
+    printf("%d %d %d\n", strlen(firstName), strlen(secondName), strlen(date));
+    for(int i=0;i<len;i++){
+        if(Employees[i].Employee_ID == emp_id){
+            return 0;
+        }
+    }
+    char* first = (char*)malloc(strlen(firstName+1));
+    first[strlen(firstName)] = '\0';
+    strcpy(first, firstName);
+    
+    char* second = (char*)malloc(strlen(secondName+1));
+    second[strlen(secondName)] = '\0';
+    strcpy(second, secondName);
+    
+    char* JDate = (char*)malloc(strlen(date)+1);
+    JDate[strlen(date)] = '\0';
+    strcpy(JDate, date);
+    
+    struct Employee emp;
+    emp.Employee_ID = emp_id;
+    emp.First_Name = first;
+    emp.Last_Name = second;
+    emp.Salary = salary;
+    emp.Joining_Date = JDate;
+    
+    printf("%d\n%s\n%s\n%d\n%s\n", emp.Employee_ID, emp.First_Name, emp.Last_Name, emp.Salary, emp.Joining_Date);
+    Employees[len] = emp;
+    printf("%d\n%s\n%s\n%d\n%s\n", Employees[len].Employee_ID, Employees[len].First_Name, Employees[len].Last_Name, Employees[len].Salary, Employees[len].Joining_Date);
+    return 1;
+}
+
+int deleteEmployee(struct Employee* Employees, int emp_id, int len){
+    printf("Delete employee\n");
+    for(int i=0;i<len;i++){
+        if(Employees[i].Employee_ID == emp_id){
+            struct Employee temp = Employees[i];
+            Employees[i] = Employees[len-1];
+            Employees[len-1] = temp;
+            Employees[len-1].Employee_ID = 0;
+            Employees[len-1].Salary = 0;
+            free(Employees[len-1].First_Name);
+            free(Employees[len-1].Last_Name);
+            free(Employees[len-1].Joining_Date);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void displayEmployee(){
+    
+}
+
+
+void updateSalary(struct Employee* Employees, int i, int salary){
+    printf("update employee salary\n");
+    Employees[i].Salary = salary;
+}
+
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    struct Employee Employees[100];
+    printf("%d\n%s\n%s\n%d\n%d\n", Employees[0].Employee_ID, Employees[0].First_Name, Employees[0].Last_Name,Employees[0].Salary, Employees[0].Joining_Date);
+    int len = 0;
+    int maxSalary = INT_MIN, minSalary = INT_MAX;
+    float meanSalary = 0.0;
+    while(n--)
+    {
+        int q;
+        scanf("%d", &q);
+        switch(q){
+            case 1:{
+                if(len == 100){
+                    printf("Maximum employees in the array added!\n");
+                    break;
+                }
+                int emp_id;
+                char firstName[50];
+                char secondName[50];
+                int salary;
+                char date[11];
+                scanf("%d%s%s%d%s", &emp_id, firstName, secondName, &salary, date);
+                // printf("%d\n%d\n%d\n", emp_id, firstName, secondName, salary, date);
+                int ans = addEmployee(Employees, emp_id, firstName, secondName, salary, date, len);
+                if(!ans){
+                    printf("Employee ID already exists!\n");
+                    break;
+                }
+                if(salary > maxSalary){
+                    maxSalary = salary;
+                }
+                if(salary < minSalary){
+                    minSalary = salary;
+                }
+                meanSalary = (meanSalary*len + salary)/(len+1);
+                len++;
+                break;
+            }
+            case 2:{
+                int emp_id;
+                scanf("%d",&emp_id);
+                if(len == 0){
+                    printf("No employees in the record!\n");
+                    break;
+                }
+                int ans = deleteEmployee(Employees, emp_id, len);
+                if(!ans){
+                    printf("No employee with %d employee ID found!\n", emp_id);
+                    break;
+                }
+                len--;
+                if(len == 0){
+                    maxSalary = minSalary = meanSalary = 0;
+                }
+                else{
+                    maxSalary = minSalary = Employees[0].Salary;
+                    meanSalary = (meanSalary*(len+1))/len;
+                    for(int i=0;i<len;i++){
+                        if(maxSalary < Employees[i].salary){
+                            maxSalary = Employees[i].salary;
+                        }
+                        if(minSalary > Employees[i].salary){
+                            minSalary = Employees[i].salary;
+                        }
+                    }   
+                }
+                break;
+            }
+            case 3:{
+                //single display
+                int emp_id;
+                scanf("%d",&emp_id);
+                int ans = findEmployee(Employees, len, emp_id);
+                if(i == len){
+                    printf("No employee with employee ID %d",emp_id);
+                    break;
+                }
+                displayEmployee(Employee, ans);
+                break;
+            }
+            case 4:{
+                //all employee display
+                for(int i=0;i<len;i++){
+                    displayEmployee(Employees,i);
+                }
+                break;
+            }
+            case 5:
+            {   
+                if(len == 0){
+                    printf("No data available\n");
+                    break;
+                }
+                int emp_id, salary;
+                scanf("%d%d", &emp_id, &salary);
+                int ans = findEmployee(Employees, len, emp_id);
+                if(i == len){
+                    printf("No employee with employee ID %d",emp_id);
+                    break;
+                }
+                updateSalary(Employees, ans, salary);
+                meanSalary = (meanSalary*len + salary - Employees[i].Salary)/len;
+                if(salary > maxSalary){
+                    maxSalary = salary;
+                }
+                if(salary < minSalary){
+                    minSalary = salary;
+                }
+                break;
+            }
+            case 6:
+                // displayMinimum();
+                // displayMaximum();
+                // displayMean();
+                printf("%d %d %d\n", minSalary, maxSalary, meanSalary);
+                break;
+            case 7:
+                printf("%d", len);
+                break;
+            default:
+                printf("No task defined\n");
+                break;
+        }
+    }
+}
