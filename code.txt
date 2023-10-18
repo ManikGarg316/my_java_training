@@ -71,8 +71,8 @@ int deleteEmployee(struct Employee* Employees, int emp_id, int len){
     return 0;
 }
 
-void displayEmployee(){
-    
+void displayEmployee(struct Employee *Employees, int i){
+    printf("%d %s %s %d %d\n", Employees[i].Employee_ID, Employees[i].First_Name, Employees[i].Last_Name,Employees[i].Salary, Employees[i].Joining_Date);
 }
 
 
